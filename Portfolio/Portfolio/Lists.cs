@@ -27,6 +27,16 @@ namespace Portfolio
             get { return count; } // When Count is called returns the count.
         }
 
+        public void List()
+        {
+            head = null;  //Creates the start of the list to be null.
+        }
+
+        ~List()
+        {
+
+        }
+
         public void InsertBeginning(T data)
         {
             Node newNode = new Node(); //Creates a new node.

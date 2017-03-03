@@ -12,6 +12,7 @@ namespace Portfolio
     {
         static void Main(string[] args)
         {
+            #region Lists Tests
             Lists<int> Lists = new Lists<int>();
 
             Lists.InsertBeginning(5);
@@ -26,16 +27,26 @@ namespace Portfolio
 
             Lists.RemoveAfter(2);
 
-            
-
             Console.WriteLine(Lists.Count);
+            #endregion
 
+            #region Stack Tests
+            Stacks<int> stack = new Stacks<int>();
+            stack.Push(8);
+            stack.Push(3);
+            stack.Push(5);
+            stack.Push(6);
+            stack.Push(10);
+            stack.Push(2);
+            stack.Peek();
+            while (!stack.IsEmpty())
+            {
+                int output;
+                stack.Pop(out output);
+                Console.WriteLine(output);
+            }
 
+            #endregion
         }
-
-        //public void InsertBeginning(T)
-        //{
-        //    
-        //}
     }
 }
