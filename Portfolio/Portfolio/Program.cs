@@ -12,7 +12,7 @@ namespace Portfolio
     {
         static void Main(string[] args)
         {
-            #region Lists Tests
+           #region Lists Tests
             Lists<int> Lists = new Lists<int>();
 
             Lists.InsertBeginning(5);
@@ -30,7 +30,7 @@ namespace Portfolio
             Console.WriteLine(Lists.Count);
             #endregion
 
-            #region Stack Tests
+           #region Stack Tests
             Stacks<int> stack = new Stacks<int>();
             stack.Push(8);
             stack.Push(3);
@@ -45,7 +45,21 @@ namespace Portfolio
                 stack.Pop(out output);
                 Console.WriteLine(output);
             }
+            #endregion 
 
+           #region Queue Tests
+            Queues<int> queue = new Queues<int>();
+            queue.Enqueue(5);
+            queue.Enqueue(8);
+            queue.Enqueue(3);
+            queue.Enqueue(9);
+
+            while (!queue.IsEmpty())
+            {
+                int output;
+                queue.Dequeue(out output);
+                Console.WriteLine(output);
+            }
             #endregion
         }
     }

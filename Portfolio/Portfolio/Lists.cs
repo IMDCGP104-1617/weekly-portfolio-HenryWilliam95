@@ -32,11 +32,6 @@ namespace Portfolio
             head = null;  //Creates the start of the list to be null.
         }
 
-        ~List()
-        {
-
-        }
-
         public void InsertBeginning(T data)
         {
             Node newNode = new Node(); //Creates a new node.
@@ -91,7 +86,6 @@ namespace Portfolio
             }
 
             current = current.Next;
-
         }
 
         public T RemoveAfter(int count)
@@ -116,6 +110,26 @@ namespace Portfolio
             current = current.Next; //Assign current to the next node.
 
             return ret;
+        }
+
+        public void InsertEnd(T data) //Inserts at the end of the queue
+        {
+            if (head == null) //If the queue is empty
+            {
+                InsertBeginning(data); //Insert the first section of data as the head.
+            }
+            else
+            {
+                Node current = head; //Other wise find the head
+                while (current.Next != null) //While the current node we are looking at points to something, keep going down the queue.
+                {
+                    current = current.Next;
+                }
+                Node newNode = new Node(); //When we find the end of the queue where current.Next == null, create a new node
+                newNode.Data = data; //Set the data of the new node.
+                newNode.Next = null; //Set the pointer to = null.
+                current.Next = newNode; //Set the last nodes pointer to point to the newly created node.
+            }
         }
 
 
