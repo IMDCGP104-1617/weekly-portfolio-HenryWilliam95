@@ -30,9 +30,9 @@ namespace Trees2
             root.printTree();
 
             //Remove a value
-            root.remove(15);
-            root.remove(3);
-            root.remove(10);
+            root.Delete(15);
+            root.Delete(3);
+            root.Delete(10);
 
             //Print the tree again
             root.printTree();

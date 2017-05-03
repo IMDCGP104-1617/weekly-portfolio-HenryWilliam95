@@ -8,69 +8,66 @@ namespace Trees2
 {
     class Node
     {
-
         public Node(int value, Node par)
         {
             this.Value = value;
-            this.parent = par;
+            this.parentNode = par;
             nodeList.Add(this);
         }
-        public Node()
-        { }
 
         static List<Node> nodeList = new List<Node>();
 
-        public Node Left; 
-        public Node Right;
-        public Node parent;
+        public Node leftNode; 
+        public Node rightNode;
+        public Node parentNode;
+
+        public int Value;
 
         public bool hasLeftChild()
         {
-            return (Left != null);
+            return (leftNode != null);
         }
 
         public bool hasRightChild()
         {
-            return (Right != null);
+            return (rightNode != null);
         }
         
         public bool hasNoChildren()
         {
-            if (Left == null && Right == null) return true;
+            if (leftNode == null && rightNode == null) return true;
             return false;
         }
 
         public bool hasBothChildren() 
         {
-            return (Left != null && Right != null);
+            return (leftNode != null && rightNode != null);
         }
-
-        public int Value;
 
         public void Insert(int newValue)
         {
             if (newValue < Value)
             {
-                if (Left == null)
+                if (leftNode == null)
                 {
-                    Left = new Node(newValue, this); //Create a new node on the left
+                    leftNode = new Node(newValue, this); //Create a new node on the left
                     //Left.Value = newValue; //Stores the values in the left node
                 }
                 else
                 {
-                    Left.Insert(newValue); //Replace 
+                    leftNode.Insert(newValue); //Replace 
                 }
             }
             else if (newValue > Value)
             {
-                if (Right == null)
+                if (rightNode == null)
                 {
-                    Right = new Node(newValue, this);  //Creates a new node on the right
+                    rightNode = new Node(newValue, this);  //Creates a new node on the right
                     //Right.Value = newValue; //Stores the value in the right node
                 }
                 else
                 {
-                    Right.Insert(newValue); //Replace
+                    rightNode.Insert(newValue); //Replace
                 }
             }
 
@@ -80,17 +77,17 @@ namespace Trees2
         {
             if (searchValue < Value)
             {
-                if (Left == null)
+                if (leftNode == null)
                     return null; //If there is no content return null
 
-                return Left.Search(searchValue); //Else return the value
+                return leftNode.Search(searchValue); //Else return the value
             }
             else if (searchValue > Value)
             {
-                if (Right == null)
+                if (rightNode == null)
                     return null; //If there is no content return null
 
-                return Right.Search(searchValue); //Else return the value
+                return rightNode.Search(searchValue); //Else return the value
             }
             else
             {
@@ -98,164 +95,146 @@ namespace Trees2
             }
         }
 
-        void Delete(int deletion, Node parent)
+        public void Delete(int deletion)
         {
             Node startNode = this.Search(deletion);
             if (startNode == null) return;
 
             //Run this code if this is a leaf node.
-            if (startNode.hasNoChildren()) {
-                //Remove reference from the parent to the node being deleted.
-                if (startNode.parent.Left.Value == startNode.Value)
-                    startNode.parent.Left = null;
-                //If it is not a left node, check the right side.
-                else if
-                (startNode.parent.Right.Value == startNode.Value)
-                    startNode.parent.Right = null;
-
-                //Removes the node by making it null.
-                Node.nodeList.Remove(startNode);
-                startNode = null;
-            }
-            //Check if the node to be deleted has a left.
-            else if (startNode.hasLeftChild()) 
-            {
-                //If the node has two children run this code.
-                if (startNode.hasRightChild()) {
-
-                }
-                //Else if there is just one child run this.
-                else if (!startNode.hasRightChild()) 
-                {
-                    
-                }
-
-            } 
-            //Checks if the node just has a right child.
-            else if (startNode.hasRightChild()) 
-            {
-                 
-            }
-
-
-
-
-
-
-
-
-            if (deletion == Value) //Checks if this is the correct value.
-            {
-                if (Left == null && Right == null) //Checks if the children are null.
-                {
-                    if (parent.Right == this) //If the value we are looking at is on the left of its parent
-                        parent.Right = null; //Delete the right child
-                    else
-                        parent.Left = null; //If the child is not on the right, delete the left child
-
-                    return;
-                }
-
-                else if (Left != null && Right != null)
-                {
-
-                }
-
-                else
-                {
-                    bool isLeft = (parent.Left == this); //Checks if this is the parents left node
-
-                    if (Left != null) //Checks if the left is not null, so therefore the child is on the left.
-                    {
-                        if (isLeft) //If it is, check which node to replace.
-                            parent.Left = Left; 
-                        else
-                            parent.Right = Left;
-                    }
-                    else
-                    {
-                        if (!isLeft) //Checks if the child is on the right 
-                            parent.Left = Right;
-                        else
-                            parent.Right = Right;
-                    }
-                }
-            }
-
-        }
-
-
-        public void remove(int toDelete)
-        {
-
-            Node startNode = this.Search(toDelete);
-            if (startNode == null) return;
-
-            //If I have no children
-
             if (startNode.hasNoChildren())
             {
-                //Make our parents refference to us null
-                if (startNode.parent.Left.Value == startNode.Value) startNode.parent.Left = null;
-                else if (startNode.parent.Right.Value == startNode.Value) startNode.parent.Right = null;
+                //Remove reference from the parent to the node being deleted.
+                if (startNode.parentNode.leftNode.Value == startNode.Value)
+                    startNode.parentNode.leftNode = null;
+                //If it is not a left node, check the right side.
+                else if
+                (startNode.parentNode.rightNode.Value == startNode.Value)
+                    startNode.parentNode.rightNode = null;
 
-                //make startnode null
-                Node.nodeList.Remove(startNode);
+                //Removes the node by making it null.
+                nodeList.Remove(startNode);
                 startNode = null;
             }
-            //If WE have a left child...
+            //Check if the node to be deleted has a left child.
             else if (startNode.hasLeftChild())
             {
-                //TempRef refers to OUR left child...
-                Node tempRef = startNode.Left;
-
-                //If this child has a Right Child...
-                while (tempRef.hasRightChild())
+                //If the node has two children run this code.
+                if (startNode.hasRightChild())
                 {
-                    //This now becomes temp Ref
-                    tempRef = tempRef.Right;
+                    //Makes the tempNode move to the right child, then travel down to take left most node of right tree.
+                    Node tempNode = startNode.rightNode;
+                    while (tempNode.hasLeftChild())
+                    {
+                        tempNode = tempNode.leftNode;
+                    }
+                    //Swap the values the remove the bottom left node. (Which will now be a leaf node)
+                    startNode.Value = tempNode.Value;
 
-                    //Keep looping until there is no more right child
+                    nodeList.Remove(startNode);
+                    tempNode.parentNode.leftNode = null;
                 }
-                //Once we have found the highest child...
-
-                //If this isnt YET the value...
-                if (tempRef.Value != toDelete)
+            
+                //Else if there is just one child run this.
+                else if (!startNode.hasRightChild())
                 {
-
+                    if (startNode.parentNode.hasLeftChild() && startNode.parentNode.leftNode == startNode)
+                    {
+                        startNode.parentNode.leftNode = startNode.leftNode;
+                        startNode.leftNode.parentNode = startNode.parentNode;
+                        nodeList.Remove(startNode);
+                        startNode = null;
+                    }
+                    else if (startNode.parentNode.hasRightChild() && startNode.parentNode.rightNode == startNode)
+                    {
+                        startNode.parentNode.rightNode = startNode.leftNode;
+                        startNode.leftNode.parentNode = startNode.parentNode;
+                        nodeList.Remove(startNode);
+                        startNode = null;
+                    }
                 }
 
-                //--
-                //Swap our values with tempRef...
-
-                //Remember our values
-                int tempVal = startNode.Value;
-                Node tempRight = startNode.Right;
-                Node tempLeft = startNode.Left;
-
-                //Our values become tempRef values
-                startNode.Value = tempRef.Value;
-                startNode.Right = tempRef.Right;
-                startNode.Left = tempRef.Left;
-
-                //tempRef values become our old values
-                tempRef.Value = tempVal;
-                tempRef.Right = tempRight;
-                tempRef.Left = tempLeft;
-
-                //Delete tempRef;
-                nodeList.Remove(tempRef);
-                tempRef = null;
+            }
+            //Checks if the node just has a right child.
+            else if (startNode.hasRightChild())
+            {
+                //Checks if the startNode is the left child of its parent
+                if (startNode.parentNode.hasLeftChild() && startNode.parentNode.leftNode == startNode)
+                {
+                    //Makes the parent's left pointer, point to startNodes right child.
+                    startNode.parentNode.leftNode = startNode.rightNode;
+                    startNode.rightNode.parentNode = startNode.parentNode;
+                    nodeList.Remove(startNode);
+                    startNode = null;
+                }
+                //Checks if the startNode is the right child of its parent
+                else if (startNode.parentNode.hasRightChild() && startNode.parentNode.rightNode == startNode)
+                {
+                    //Makes the parent's right pointer, point to startNodes left child.
+                    startNode.parentNode.rightNode = startNode.rightNode;
+                    startNode.rightNode.parentNode = startNode.parentNode;
+                    nodeList.Remove(startNode);
+                    startNode = null;
+                }
+            }
+        }
+        
+        //Prints root, then left side then right side
+        public void PreOrderTraverse()
+        {
+            //Print out the current value (Starts at root)
+            Console.WriteLine(this.Value + " ");
+            //Checks if there is a left node, if there is it prints that node
+            if (this.hasLeftChild())
+            {
+                //Then checks for another left node, keeps doing this until it reaches the end of the left nodes.
+                this.leftNode.PreOrderTraverse();
+            }
+            //Then it will check the right node of every node it has check on the left side before getting back to the root, then going down that left side then right side.
+            if (this.hasRightChild())
+            {
+                this.rightNode.PreOrderTraverse();
             }
         }
 
-        public void printTree()
+        //Start traversing the left tree, then the right tree then the root.
+        public void PostOrderTraverse()
         {
-            Console.WriteLine("Printing each value in tree (no particular order): ");
-           foreach(Node node in Node.nodeList)
+            //Checks if there is a left child, if there is, works down until there is no more left children, then prints that value.
+            if (this.hasLeftChild())
             {
-                Console.WriteLine("\t" + node.Value);
+                //Moves onto the next node.
+                this.leftNode.PostOrderTraverse();
             }
+            //Checks if there is a right child, if there is, works down until there is no more right children, then prints that value.
+            if (this.hasRightChild())
+            {
+                //Moves onto the next node.
+                this.rightNode.PostOrderTraverse();
+            }
+            //Prints out the current value.
+            Console.WriteLine(this.Value + " ");
+        }
+
+        //Prints out the tree in order, starting with left mode node, the left most right node, moving up to the root then down the right.
+        public void InOrderTraverse()
+        {
+            //Checks if there is a left child
+            if (this.hasLeftChild())
+            {
+                //Keep moving down until there are no more left children
+                this.leftNode.InOrderTraverse();
+            }
+            //Print this value out, then check for more left, then print out the right side of that node too.
+            Console.WriteLine(this.Value + " ");
+            if (this.hasRightChild())
+            {
+                this.rightNode.InOrderTraverse();
+            }
+        }
+
+        public void LevelOrderTraverse()
+        {
+
         }
     }
 }
